@@ -8,10 +8,25 @@ jobs:
   update-gist:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      # 1.
+      - uses: actions/checkout@v4
+
+      # 2. 设置 Node.js 环境
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '12'
+      # 3. 安装依赖
+      - name: Install dependencies
+        run: npm install
+
+      # 4. 打包代码
+      - name: Build the action
+        run: npm run build
+      # 5.
       - name: Update gist
-        uses: superman66/wakatime-sync@master
-        # uses: ./ # 根目录的action.yml
+        # uses: superman66/wakatime-sync@master
+        uses: ./  # 根目录的action.yml
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
           GIST_ID: ${{ secrets.GIST_ID}}
