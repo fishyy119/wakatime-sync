@@ -4,6 +4,7 @@ on:
     - cron: '40 1 * * *'
 
   workflow_dispatch: # 允许手动触发工作流
+
 jobs:
   update-gist:
     runs-on: ubuntu-latest
