@@ -1,9 +1,9 @@
 name: Update gist with WakaTime summary
 on:
   schedule:
-    - cron: '40 1 * * *'
-
+    - cron: '40 1 * * *' # UTC+0
   workflow_dispatch: # 允许手动触发工作流
+  push:
 
 jobs:
   update-gist:
@@ -16,7 +16,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '12'
+          node-version: '16'
 
       # 3. 设置包缓存目录，避免每次下载
       - name: Cache node modules
@@ -36,12 +36,12 @@ jobs:
       # 6.
       - name: Update gist
         # uses: superman66/wakatime-sync@master
-        uses: ./  # 根目录的action.yml
+        uses: ./ # 根目录的action.yml
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
           GIST_ID: ${{ secrets.GIST_ID}}
           WAKATIME_API_KEY: ${{ secrets.WAKATIME_API_KEY }}
-          SCU_KEY: ${{ secrets.SCU_KEY }} # 发通知的，不用
+          # SCU_KEY: ${{ secrets.SCU_KEY }} # 发通知的，不用
 
   keepalive-job:
     name: Keepalive Workflow
