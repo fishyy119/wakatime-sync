@@ -1,13 +1,14 @@
 require('dotenv').config()
-const { WakaTimeClient, RANGE } = require('wakatime-client')
-const dayjs = require('dayjs')
-const { Octokit } = require('@octokit/rest')
-const Axios = require('axios')
+import { WakaTimeClient, RANGE } from 'wakatime-client'
+import dayjs from 'dayjs'
+import { Octokit } from '@octokit/rest'
+import { get } from 'axios'
 
-const { WAKATIME_API_KEY, GH_TOKEN, GIST_ID, SCU_KEY } = process.env
+// const { WAKATIME_API_KEY, GH_TOKEN, GIST_ID, SCU_KEY } = process.env
+const { WAKATIME_API_KEY, GH_TOKEN, GIST_ID } = process.env
 const BASE_URL = 'https://wakatime.com/api/v1'
 const summariesApi = `${BASE_URL}/users/current/summaries`
-const scuPushApi = `https://sctapi.ftqq.com`
+// const scuPushApi = `https://sctapi.ftqq.com`
 
 const wakatime = new WakaTimeClient(WAKATIME_API_KEY)
 const octokit = new Octokit({
@@ -37,7 +38,7 @@ function getMessageContent(date, summary) {
 }
 
 function getMySummary(date) {
-  return Axios.get(summariesApi, {
+  return get(summariesApi, {
     params: {
       start: date,
       end: date,
@@ -89,6 +90,8 @@ const fetchSummaryWithRetry = async times => {
     .format('YYYY-MM-DD')
   try {
     const mySummary = await getMySummary(yesterday)
+    console.log(getMessageContent(yesterday, mySummary.data))
+
     await updateGist(yesterday, mySummary.data)
     // await sendMessageToWechat(
     //   `${yesterday} update successfully!`,
@@ -97,7 +100,7 @@ const fetchSummaryWithRetry = async times => {
   } catch (error) {
     if (times === 1) {
       console.error(`Unable to fetch wakatime summary\n ${error} `)
-      return await sendMessageToWechat(`[${yesterday}]failed to update wakatime data!`)
+      // return await sendMessageToWechat(`[${yesterday}]failed to update wakatime data!`)
     }
     console.log(`retry fetch summary data: ${times - 1} time`)
     fetchSummaryWithRetry(times - 1)
