@@ -1,8 +1,8 @@
 require('dotenv').config()
-import { WakaTimeClient, RANGE } from 'wakatime-client'
-import dayjs from 'dayjs'
 import { Octokit } from '@octokit/rest'
 import { get } from 'axios'
+import dayjs from 'dayjs'
+import { WakaTimeClient } from 'wakatime-client'
 
 // const { WAKATIME_API_KEY, GH_TOKEN, GIST_ID, SCU_KEY } = process.env
 const { WAKATIME_API_KEY, GH_TOKEN, GIST_ID } = process.env
@@ -27,13 +27,17 @@ function getMessageContent(date, summary) {
   if (summary.length > 0) {
     const { projects, grand_total, languages, categories, editors } = summary[0]
 
-    return `## Wakatime Daily Report\nTotal: ${grand_total.text}\n${getItemContent(
-      'Projects',
-      projects
-    )}\n${getItemContent('Languages', languages)}\n${getItemContent(
-      'Editors',
-      editors
-    )}\n${getItemContent('Categories', categories)}\n`
+    // return `## Wakatime Daily Report\n
+    // Total:
+    // ${grand_total.text}\n
+    // ${getItemContent('Projects', projects)}\n
+    // ${getItemContent('Languages', languages)}\n
+    // ${getItemContent('Editors', editors)}\n
+    // ${getItemContent('Categories', categories)}\n`
+    return `## Wakatime Daily Report\n
+    Total: 
+    ${grand_total.text}\n
+    ${getItemContent('Languages', languages)}\n`
   }
 }
 
