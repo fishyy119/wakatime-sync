@@ -3,7 +3,7 @@ on:
   schedule:
     - cron: '40 1 * * *' # UTC+0
   workflow_dispatch: # 允许手动触发工作流
-  push:
+  # push:
 
 jobs:
   update-gist:
@@ -42,12 +42,11 @@ jobs:
           GIST_ID: ${{ secrets.GIST_ID}}
           WAKATIME_API_KEY: ${{ secrets.WAKATIME_API_KEY }}
           # SCU_KEY: ${{ secrets.SCU_KEY }} # 发通知的，不用
-
-  keepalive-job:
-    name: Keepalive Workflow
-    runs-on: ubuntu-latest
-    permissions:
-      actions: write
-    steps:
-      - uses: actions/checkout@v4
-      - uses: gautamkrishnar/keepalive-workflow@v2
+  # keepalive-job:
+  #   name: Keepalive Workflow
+  #   runs-on: ubuntu-latest
+  #   permissions:
+  #     actions: write
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: gautamkrishnar/keepalive-workflow@v2
